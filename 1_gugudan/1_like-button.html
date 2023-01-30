@@ -1,0 +1,158 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>튜토리얼</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- React는 특별한 것이 아니고 HTML, CSS를 만들어내는 JS일 뿐 -->
+    <!-- 아래 파일을 불러오면, React 및 ReactDOM 객체를 사용할 수 있음! -->
+    <!-- 실제로는 웹팩, 바벨을 사용해 대신 처리하기 떄문에 이런 방법을 사용하지는 않음 -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ></script>
+    <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>-->
+    <!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>-->
+    <!-- JSX를 사용했다면, script 태그에 type="text/babel" 추가-->
+    <script>
+      // 기존 : 화면 먼저 생각 => 데이터는 JS로 화면을 수정하는 방식으로 프로그래밍(jQuery)
+      // React : 데이터를 먼저 생각 => 화면은 자동으로 바뀜
+      "use strict";
+
+      const e = React.createElement;
+
+      // 클래스 컴포넌트
+      // "Error boundary"에서만 쓰이고, 클래스 컴포넌트 대신 함수 컴포넌트를 사용
+      // 컴포넌트? **데이터와 화면을 하나로 묶어주는 덩어리**
+      // 데이터 : state
+      // 화면 : return하는 객체
+      // 사용자 정의 HTML 태그는 대문자로 시작해야 함! 기존에 정의된 HTML 태그는 소문자로 시작해야 함!
+      // HTML 태그에서 문자열은 "", JS 코드는 {}로 처리
+      class LikeButton extends React.Component {
+        // 1. 생성자
+        constructor(props) {
+          super(props);
+          // state : 화면에서 보여줄 그리고 바꿀 데이터 그 자체
+          this.state = { liked: false };
+        }
+
+        // 2. render 함수 : return하는 값으로 화면을 그림
+        // return value : React.createElement()가 반환하는 객체 React element
+        // HTML이지만 컨트롤은 JS가 하는 셈!
+        render() {
+          // 데이터 중심 생각 : 화면에서 달라질 부분을 데이터(state)로 만들어야 함
+          if (this.state.liked) {
+            return "You liked this.";
+          }
+
+          return e(
+            "button",
+            // state를 수정하는 것이 아닌 setState()를 이용하여 새로운 객체를 생성해야 함!
+            // this.state.liked = true; 금지
+            // pop, push, shift, unshift, splice ... : 배열을 직접적으로 수정
+            // concat, slice ... : 새로운 배열을 만들어 냄
+            { onClick: () => this.setState({ liked: true }) },
+            "Like"
+          );
+          // JSX 문법 : babel이 React.createElement() 문법으로 변환!
+          // 한계) JS 코드 {} 안에서 조건문/반복문을 사용하지 못함
+          // 조건문 => 삼항 연산자
+          // 반복문 => array.map()...을 이용!
+          // 하나의 태그만 return할 수 있음 => <div> 또는 <> fragment(가짜 태그)로 감싸줄 것
+          //   return (
+          //     <button onClick={() => this.setState({ liked: true })}>Like</button>
+          //   );
+        }
+      }
+
+      // 변형 1 : 함수를 밖으로 빼는 방법
+      class LikeButton1 extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { liked: false };
+          // 이것을 넣어주어야 함수를 바깥으로 뺄 수 있었음
+          // 아니면 onClickButton 함수를 화살표 함수로 정의하면 아래 코드를 작성하지 않아도 됨
+          this.onClickButton = this.onClickButton.bind(this);
+        }
+        
+        onClickButton() {
+          this.setState({liked : true});
+        }
+
+        render() {
+          if (this.state.liked) {
+            return "You liked this.";
+          }
+
+          return e(
+            "button",
+            { onClick: this.onClickButton },
+            "Like"
+          );
+        }
+      }
+
+      // 변형 2 : constructor를 사용하지 않는 방법
+      class LikeButton2 extends React.Component {
+        state = {liked : false};
+
+        onClickButton = () => {
+          this.setState({liked : true});
+        }
+
+        render() {
+          if (this.state.liked) {
+            return "You liked this.";
+          }
+
+          return e(
+            "button",
+            { onClick: this.onClickButton },
+            "Like"
+          );
+        }
+      }
+
+      // 변형 3 : 함수 컴포넌트(함수형 컴포넌트 아님에 주의)
+      // class 컴포넌트에는 this 문제가 있어서 함수 컴포넌트를 사용
+      // this를 사용할 일이 없음
+      function LikeButton3() {
+        // 구조 분해 : 배열의 자리에 해당하는 것을 꺼내어 변수에 바로 대입
+        // 구조 분해란?
+        const [liked, setLiked] = React.useState(false);  
+        // 배열과 객체는 **완전히 다른 뜻**이기 때문에 주의! => 반드시 배열로
+        // const {liked, setLiked} = React.useState(false);  
+        // JS 옛날 문법
+        // const liked = result[0];
+        // const setLiked = result[1];
+
+        // function component는 render()가 없기 때문에
+        // 함수 내에서 return하는 것이 화면에 해당!
+        if (liked) {
+          return "You liked this."
+        }
+         
+        return e(
+            "button",
+            { onClick: () => {setLiked(true);} },
+            "Like"
+          );
+      }
+    </script>
+    <script>
+      // 회사 코드가 React17(ReactDOM.render)인지 React18(ReactDOM.createRoot)인지 확인할 것!
+      // 지정한 컴포넌트를 id=root인 태그에 그려라!
+      ReactDOM.render(e(LikeButton), document.querySelector("#root"));
+      // ReactDOM.render(e(LikeButton1), document.querySelector("#root"));
+      // ReactDOM.render(e(LikeButton2), document.querySelector("#root"));
+      // ReactDOM.render(e(LikeButton3), document.querySelector("#root"));
+      // React18
+      // ReactDOM.createRoot(document.querySelector("#root")).render(e(LikeButton));
+    </script>
+  </body>
+</html>

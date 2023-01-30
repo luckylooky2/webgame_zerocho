@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>setState prevState 예제</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ></script>
+    <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>-->
+    <!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>-->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        "use strict";
+  
+  const e = React.createElement;
+
+  class Counter extends React.Component {
+      state = {count : 0};
+
+      render() {
+          return (
+              <>
+                <span>{this.state.count}</span>
+                <button onClick={() => {
+                    this.setState({ count : this.state.count + 1});
+                    this.setState({ count : this.state.count + 1});
+                    // setState의 인자로 **state를 return하는 함수**를 전달할 수 있는 API를 제공
+                    // 원래 : setState의 인자로 단순히 **state**를 전달
+                    // 장점? prevState(바꾸기 전의 state 값)을 이용할 수 있음
+                    // 바꾸기 전의 상태 값을 바꾸려는 상태 값에 활용할 수 있다는 장점!
+                    // 즉, this.setState(this.state.value + 1)처럼 사용하지 않아도 됨
+                    // this.setstate((prevState) => { return prevState + 1; })
+                    // why? setState 함수는 비동기로 작동하기 때문에
+                    // setState(value + 1)을 3번 연속으로 호출한다고 해서 value + 3이 되는 것이 아님!
+                    // 하지만 prevState를 이용한다면, 동기적으로 작동하는 코드를 사용할 수 있음
+                    // this.setState((prevState) => { return {count : prevState.count + 1}});
+                    // this.setState((prevState) => { return {count : prevState.count + 1}});
+                }}>add</button>
+            </>
+        );
+      }
+  }
+
+    </script>
+    <script type="text/babel">
+      // 각 컴포넌트 별로 state는 독립적이다!
+      ReactDOM.render(
+        <div>
+          <Counter />
+        </div>, document.querySelector("#root"));
+    </script>
+  </body>
+</html>
