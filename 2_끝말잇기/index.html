@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>끝말잇기</title>
+</head>
+<body>
+    <div id="root"></div>
+    <!-- npm에서 불러오기 때문에 <script> 태그는 필요 없음! -->
+    <!-- <script
+      crossorigin
+      src="https://unpkg.com/react@16/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
+    <script src="./dist/app.js"></script>
+</body>
+</html>
+
+<!--
+create-react-app이 자동으로 해주는 것들
+
+- 한 페이지에 컴포넌트가 엄청 많은데
+- <script> 태그로 컴포넌트를 작성하는 것은 유지, 보수 측면에서 너무 비효율적
+- 방법? src="" 속성으로 JS 파일로부터 가져오기 => 코드 중복을 해결하지 못함
+- 또 다른 방법? 웹팩을 개발 => "여러 개의 JS 파일을 (babel 적용, 중복 및 불필요 코드 제거 등...) 하나의 JS 파일로 만들어주는 JS 파일!"
+
+- node.js?
+- 서버가 아니라 "JS 실행기"
+- JS 실행기(node.js)가 JS 코드(웹팩)를 실행하는 구조
+- React를 하기위해서 node.js를 알아야 한다는 것이
+- 서버를 알아야 한다는 뜻이 아니라
+- **웹팩을 실행하기 위해 JS 실행기를 실행해야 한다는 뜻!**
+
+- npm init : package.json 생성 명령어
+- 이후, React 코드 실행에 필요한 패키지를 설치 => package.json에 추가
+- e.g. react react-dom -D webpack webpack-cli
+- 실제 웹팩은 개발용, 배포용으로는 필요 없음!
+- D 옵션 => 개발용으로만 설치(devDependencies에 추가)
+
+- webpack.config.js 파일 생성
+- client.jsx 파일 생성 : JSX 문법을 사용하면 .jsx를 붙여주는 것이 좋음
+- why? React 전용 JSX 문법을 적용한 파일이구나를 바로 알 수 있음
+- <script> src 속성에는 딱 하나의 JS 파일만 불러올 수 있음(HTML에서 하나의 파일만 인식)
+- 이렇게 하나의 JS 파일로 합쳐주는 것이 웹팩이 하는 일
+-->
