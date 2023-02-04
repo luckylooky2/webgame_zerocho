@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>끝말잇기</title>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
     <!-- npm에서 불러오기 때문에 <script> 태그는 필요 없음! -->
     <!-- <script
@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script> -->
     <script src="./dist/app.js"></script>
-</body>
+  </body>
 </html>
 
 <!--
@@ -39,15 +39,24 @@ create-react-app이 자동으로 해주는 것들
 - 서버를 알아야 한다는 뜻이 아니라
 - **웹팩을 실행하기 위해 JS 실행기를 실행해야 한다는 뜻!**
 
-- npm init : package.json 생성 명령어
+- 1. npm init : package.json 생성 명령어 => 정보 입력
 - 이후, React 코드 실행에 필요한 패키지를 설치 => package.json에 추가
 - e.g. react react-dom -D webpack webpack-cli
 - 실제 웹팩은 개발용, 배포용으로는 필요 없음!
 - D 옵션 => 개발용으로만 설치(devDependencies에 추가)
 
-- webpack.config.js 파일 생성
-- client.jsx 파일 생성 : JSX 문법을 사용하면 .jsx를 붙여주는 것이 좋음
+- 2. webpack.config.js 파일 생성
+
+- 3. client.jsx 파일 생성 : JSX 문법을 사용하면 .jsx를 붙여주는 것이 좋음
 - why? React 전용 JSX 문법을 적용한 파일이구나를 바로 알 수 있음
-- <script> src 속성에는 딱 하나의 JS 파일만 불러올 수 있음(HTML에서 하나의 파일만 인식)
-- 이렇게 하나의 JS 파일로 합쳐주는 것이 웹팩이 하는 일
+- **<script> src 속성에는 딱 하나의 JS 파일만 불러올 수 있음(HTML에서 하나의 파일만 인식)**
+- 결국! 이렇게 하나의 JS 파일로 합쳐주는 것이 웹팩이 하는 일
+
+- 4. webpack 실행
+- $ webpack을 실행하기 위해서는 명령어 등록이 필요(zsh: command not found: webpack)
+- 1) 쉘 명령어 등록
+- 2) package.json에 script로 등록 => npm run + a로 실행 가능
+- 3) npx webpack
+- /dist/app.js가 생성되고, 이 파일을 include한 <script> 태그를 사용할 수 있음
+
 -->
