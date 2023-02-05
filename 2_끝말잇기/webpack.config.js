@@ -2,6 +2,8 @@
 
 // node.js에서 경로를 조작하도록 제공
 const path = require("path");
+const webpack = require("webpack");
+const ReactRefreshWebpackPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 
 module.exports = {
   name: "wordrelay-setting", // 사실 불필요
@@ -28,14 +30,45 @@ module.exports = {
         loader: "babel-loader",
         // babel의 옵션 : 환경 변수 및 JSX 적용
         options: {
-          presets: ["@babel/preset-env", "@babel/preset-react"],
+          presets: [
+            [
+              "@babel/preset-env",
+              {
+                targets: {
+                  // 모든 브라우저를 지원하기에는 babel의 작업량(즉, 성능)에 부담
+                  // 적용시킬 브라우저에 최적화하는 노력이 필요 => browserslist의 옵션
+                  // Using targets: { "chrome": "108", "ios": "16", "samsung": "19" }
+                  browsers: ["last 2 chrome versions", "> 5% in KR"],
+                },
+                debug: true,
+              },
+            ],
+            "@babel/preset-react",
+          ],
+          plugins: [
+            // 핫 리로딩
+            "react-refresh/babel",
+          ],
         },
       },
     ],
   },
-
+  plugins: [
+    new webpack.LoaderOptionsPlugin({ debug: true }),
+    // 핫 리로딩 : 기존 데이터 유지하면서 화면을 바꿔줌
+    // vs. 리로딩 : 새로고침, 기존 데이터가 초기화됨
+    new ReactRefreshWebpackPlugin(),
+  ],
   output: {
+    // 실제 경로
     path: path.join(__dirname, "dist"), // __dirname(현재 폴더) => ./dist 절대 경로로 지정
     filename: "app.js",
+    // 가상 경로 : node.js express.static과 비슷함
+    publicPath: "/dist/",
   }, // 출력
+  devServer: {
+    devMiddleware: { publicPath: "/dist" },
+    static: { directory: path.resolve(__dirname) },
+    hot: true,
+  },
 };

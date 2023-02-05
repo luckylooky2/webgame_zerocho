@@ -1,7 +1,7 @@
 // <script src=""> 태그를 대체
 // 모듈 시스템을 이용하여 react react-dom 패키지를 불러옴
 const React = require("react");
-const ReactDom = require("react-dom");
+const ReactDOM = require("react-dom");
 
 // <script> class WordRelay extends ... </script>를 대체
 // 모듈 시스템 : 외부 JS 파일로 대체(import)
@@ -14,4 +14,4 @@ const WordRelay = require("./WordRelay");
 // but, babel을 설치 + babel 내에서도 설정 필요 => JSX 문법을 사용할 수 있음
 // npm install -D @babel/core(기본) @babel/preset-env(브라우저에 맞게 최신 -> 옛날 문법으로 변경)
 // @babel/preset-react(JSX 지원) babel-loader(babel webpack 연결)
-ReactDom.render(<WordRelay />, document.querySelector("#root"));
+ReactDOM.render(<WordRelay />, document.querySelector("#root"));
