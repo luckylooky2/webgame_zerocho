@@ -51,10 +51,12 @@ class WordRelay extends Component {
           {/*
           controlled input : value와 onChange가 존재하는 input, React에서 자주 사용
           uncontrolled input : 아무것도 없는 원시적인 HTML적인 input, 간단하다는 장점, value 속성을 사용하면 controlled input으로 간주될 수 있기 때문에 defaultValue를 사용
-          언제 사용? value가 onSubmit 안에서만 사용되는 경우에는 uncontrolled input으로 대체 가능
-          input의 id 속성 값을 주고 e.target.children.word.value(혹은 e.target[0] 즉, HTML 활용법)로 접근할 수 있기 때문
+
+          언제 사용?
+          - value가 onSubmit 안에서만 사용되는 경우에는 uncontrolled input으로 대체 가능
+          - submitForm()에서 버튼이 안 눌리는 것처럼 보이는 방법 vs. controlled input에서 아예 버튼이 눌리지 않게 하는 방법
+          <input id="value"> 로 설정 후, e.target.children.word.value(혹은 e.target[0] 즉, HTML 활용법)로 접근할 수 있기 때문
           정확하게 어떤 차이가 있나?
-          submitForm()에서 버튼이 안 눌리는 것처럼 보이는 방법 vs. controlled input에서 아예 버튼이 눌리지 않게 하는 방법
           */}
           <input
             ref={this.onRef}
