@@ -13,4 +13,15 @@ class Try extends Component {
   }
 }
 
+// Hooks로 적용 및 전환
+// 1. 클래스형 컴포넌트
+// 2. useState
+// const Try = ({ value }) => {
+//   return (
+//     <li>
+//       <b>{value.try}</b> : {value.result}
+//     </li>
+//   );
+// };
+
 module.exports = Try;

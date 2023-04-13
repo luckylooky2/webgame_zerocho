@@ -1,5 +1,6 @@
 const React = require("react");
 const { Component } = React;
+const { useState } = React;
 const Try = require("./Try");
 
 // 내부적으로 this를 사용하지 않기 때문에, 밖에서 정의할 수 있음
@@ -53,12 +54,16 @@ class NumberBaseball extends Component {
     }
     // join() : string을 반환
     if (this.state.value === this.state.answer.join("")) {
-      this.setState({
-        result: "홈런!",
-        tries: [
-          ...this.state.tries,
-          { try: this.state.value, result: "홈런!" },
-        ],
+      // setState를 연속적으로 사용해야 할 때는
+      // **함수형 setState**를 사용해야 동기적으로 처리가 가능
+      this.setState((prevState) => {
+        return {
+          result: "홈런!",
+          tries: [
+            ...prevState.tries,
+            { try: this.state.value, result: "홈런!" },
+          ],
+        };
       });
       alert("홈런! 게임을 다시 시작합니다.");
       this.setState({
@@ -71,10 +76,14 @@ class NumberBaseball extends Component {
       let strike = 0;
       let ball = 0;
       if (this.state.tries.length >= 9) {
-        this.setState({
-          result: `10번 넘게 틀려서 실패! 답은 ${this.state.answer.join(
-            ""
-          )} 였습니다.`,
+        // setState를 연속적으로 사용해야 할 때는
+        // **함수형 setState**를 사용해야 동기적으로 처리가 가능
+        this.setState((prevState) => {
+          return {
+            result: `10번 넘게 틀려서 실패! 답은 ${prevState.answer.join(
+              ""
+            )} 였습니다.`,
+          };
         });
         alert("게임을 다시 시작합니다.");
         this.setState({
@@ -162,4 +171,63 @@ class NumberBaseball extends Component {
   }
 }
 
+// Hooks로 적용 및 전환
+const HooksNumberBaseball = () => {
+  const [result, setResult] = useState("");
+  const [value, setValue] = useState("");
+  // useState의 두 가지 용법
+  // 1. 값으로 초기화
+  // 2. **함수로 초기화**
+  // 2-1) 함수 호출 : useState(getNumbers());
+  // - 함수 호출 리턴 값으로 초기화
+  // - 리렌더링 시, 다시 실행은 되지만 두 번째 이상부터는 무시(초기값 자리기 때문에)
+  // - 즉, 결과는 같으나 쓸데없이 호출되는 것이 문제!(복잡한 함수라면 더더욱 문제)
+  // 2-2) 함수 객체 전달 : useState(getNumbers);
+  // - lazy init
+  // - **함수가 호출되어 리턴 값을 돌려줄 때까지 React는 기다림**
+
+  // cf> 단, setter 함수에서는 함수 객체가 아니라 함수 호출 방식을 사용해야 함
+  // 함수 객체를 전달하는 방법도, prevState 방식으로 함수 객체를 전달할 수 있기 때문에 가능은 하지만
+  // 운이 좋은 것 뿐 제대로된 접근 방식은 아님에 주의
+  const [answer, setAnswer] = useState(getNumbers); // lazy init
+  const [tries, setTries] = useState("");
+
+  return (
+    <>
+      <h1>{result}</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          /* React에서는 camel case, html에서는 snake case */
+          maxLength={4}
+          minLength={4}
+          /* value를 꼭 붙여줘야 함 why? */
+          value={value}
+          onChange={onChange}
+        />
+        <button>입력!</button>
+      </form>
+      <h1>시도 : {tries.length}</h1>
+      <ul>
+        {tries.map((elem, index) => {
+          return <Try key={`${elem} + ${index}`} value={elem} index={index} />;
+        })}
+      </ul>
+    </>
+  );
+};
+
 module.exports = NumberBaseball;
+
+// React dev tools : 크롬 익스텐션 디버깅 툴
+// Redux dev tools : redux 데이터 구조를 볼 수 있음(보안상 숨김)
+// react 탭
+// 1. elements 탭에서 컴포넌트 이름 표시
+// 2. props, hooks 정보 표시
+// 3. react production, development 모드를 확인할 수 있음
+
+// re-rendering highlight 기능
+// 너무 많이 리렌더링이 되는 컴포넌트를 탐지 => 성능 개선 필요
+// 숫자야구에서는 등록, 숫자를 입력할 때마다 Try 컴포넌트들이 리렌더링 되는 문제
+
+// 배포 보안 : react/redux dev tools 숨김 처리, source js file 숨김 처리
