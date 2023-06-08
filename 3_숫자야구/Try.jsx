@@ -15,6 +15,7 @@ class Try extends Component {
     // this.props.value.try = "hello";
 
     // constructor를 사용하면, 미세 조정이 가능
+    // 미세 조정을 하려면, 대부분의 경우 함수를 이용
     const filtered = this.props.filter(() => {});
     this.state = {
       try: filtered,
