@@ -6,6 +6,7 @@ const Try = require("./Try");
 // *내부적으로 this를 사용하지 않기 때문에*, 밖에서 정의할 수 있음
 // 숫자 4개를 겹치지 않고 뽑는 방법
 function getNumbers() {
+  console.log("getNumbers");
   const candidates = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const array = [];
 
@@ -119,7 +120,7 @@ class NumberBaseball extends Component {
 
   // 1. 클래스 컵포넌트의 ref 사용법
   // 단, 이렇게 사용하는 것이 미세하게 조정할 수 있음(console.log를 찍는다던가...)
-  // inputRef; // why?
+  // inputRef; // this.inputRef => 멤버 변수로 할당
   // onInputRef = (c) => {
   //   this.inputRef = c;
   // };
@@ -127,7 +128,7 @@ class NumberBaseball extends Component {
   // 2. 함수형 컴포넌트 useRef와 비슷하게 사용하는 방법 => createRef
   // current를 사용함으로써, 유사한 형태로 변형(기억하기 쉬움)
   // 쉽게 사용할 수 있는 대신에 어느 정도 정해져 있기 때문에, 미세 조정이 불가
-  inputRef = createRef();
+  inputRef = createRef(); // this.inputRef
 
   render() {
     // 구조 분해 할당 문법으로 this.state 지우기
@@ -250,6 +251,7 @@ const HooksNumberBaseball = () => {
 };
 
 module.exports = NumberBaseball;
+// module.exports = HooksNumberBaseball;
 
 // React dev tools : 크롬 익스텐션 디버깅 툴
 // Redux dev tools : redux 데이터 구조를 볼 수 있음(보안상 숨김)
