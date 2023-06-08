@@ -1,9 +1,9 @@
 const React = require("react");
-const { Component } = React;
-const { useState } = React;
+const { Component, createRef } = React;
+const { useState, useRef } = React;
 const Try = require("./Try");
 
-// 내부적으로 this를 사용하지 않기 때문에, 밖에서 정의할 수 있음
+// *내부적으로 this를 사용하지 않기 때문에*, 밖에서 정의할 수 있음
 // 숫자 4개를 겹치지 않고 뽑는 방법
 function getNumbers() {
   const candidates = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -91,6 +91,7 @@ class NumberBaseball extends Component {
           answer: getNumbers(),
           tries: [],
         });
+        this.inputRef.current.focus(); // this.inputRef.focus();
       } else {
         for (let i = 0; i < 4; i++) {
           if (answerArray[i] === this.state.answer[i]) strike++;
@@ -107,6 +108,7 @@ class NumberBaseball extends Component {
           ],
           value: "",
         });
+        this.inputRef.current.focus(); // this.inputRef.focus();
       }
     }
   }
@@ -115,16 +117,36 @@ class NumberBaseball extends Component {
     this.setState({ value: e.target.value });
   }
 
+  // 1. 클래스 컵포넌트의 ref 사용법
+  // 단, 이렇게 사용하는 것이 미세하게 조정할 수 있음(console.log를 찍는다던가...)
+  // inputRef; // why?
+  // onInputRef = (c) => {
+  //   this.inputRef = c;
+  // };
+
+  // 2. 함수형 컴포넌트 useRef와 비슷하게 사용하는 방법 => createRef
+  // current를 사용함으로써, 유사한 형태로 변형(기억하기 쉬움)
+  // 쉽게 사용할 수 있는 대신에 어느 정도 정해져 있기 때문에, 미세 조정이 불가
+  inputRef = createRef();
+
   render() {
     // 구조 분해 할당 문법으로 this.state 지우기
     // hooks와 비슷하게 사용할 수 있음
     const { result, value, tries } = this.state;
+
+    // render() 안에는 setState를 사용하면 안 됨 => 무한 렌더링 문제가 발생
+    // this.setState({
+    //   value: "",
+    //   answer: getNumbers(),
+    //   tries: [],
+    // });
 
     return (
       <>
         <h1>{result}</h1>
         <form onSubmit={this.onSubmit}>
           <input
+            ref={this.onInputRef}
             type="text"
             /* React에서는 camel case, html에서는 snake case */
             maxLength={4}
@@ -192,11 +214,21 @@ const HooksNumberBaseball = () => {
   const [answer, setAnswer] = useState(getNumbers); // lazy init
   const [tries, setTries] = useState("");
 
+  // 클래스 컵포넌트의 ref 사용법
+  const inputRef = useRef(null);
+
+  const onChange = () => {
+    // ...
+    inputRef.current.focus();
+    // ...
+  };
+
   return (
     <>
       <h1>{result}</h1>
       <form onSubmit={onSubmit}>
         <input
+          ref={inputRef}
           type="text"
           /* React에서는 camel case, html에서는 snake case */
           maxLength={4}
