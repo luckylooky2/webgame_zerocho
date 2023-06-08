@@ -47,24 +47,24 @@ class Try extends Component {
 // memo : 부모 컴포넌트가 리렌더링 되었을 때 자동으로 자식 컴포넌트가 리렌더링 되는 것을 막음
 // 단, memo를 사용하면 컴포넌트 이름이 바뀔 수 있음 => Try.displayName = "Try";
 
-const Try = memo(({ value }) => {
-  // props는 자식이 바꾸면 안 됨 => 부모에게 영향을 미치면 안 되기 때문
-  // props는 부모가 자식에게 물려준 것
-  // *자식이 props를 바꿔버리면, 부모 컴포넌트가 뜻하지 않게 바뀌는 상황이 발생할 수 있음*
-  // ***따라서, 자식은 props를 바꾸지 않는다. 바꿔야 한다면, state로 만들어 바꾼다***
-  // value.result = "hello";
-  const [result, setResult] = React.useState(value.result);
+// const Try = memo(({ value }) => {
+//   // props는 자식이 바꾸면 안 됨 => 부모에게 영향을 미치면 안 되기 때문
+//   // props는 부모가 자식에게 물려준 것
+//   // *자식이 props를 바꿔버리면, 부모 컴포넌트가 뜻하지 않게 바뀌는 상황이 발생할 수 있음*
+//   // ***따라서, 자식은 props를 바꾸지 않는다. 바꿔야 한다면, state로 만들어 바꾼다***
+//   // value.result = "hello";
+//   const [result, setResult] = React.useState(value.result);
 
-  const onClick = () => {
-    setResult("1");
-  };
-  return (
-    <li>
-      <b>{value.try}</b> : {value.result}
-      <div onClick={onClick}>{value.result}</div>
-    </li>
-  );
-});
-Try.displayName = "Try";
+//   const onClick = () => {
+//     setResult("1");
+//   };
+//   return (
+//     <li>
+//       <b>{value.try}</b> : {value.result}
+//       <div onClick={onClick}>{value.result}</div>
+//     </li>
+//   );
+// });
+// Try.displayName = "Try";
 
 module.exports = Try;
