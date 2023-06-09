@@ -40,7 +40,7 @@ function useInterval(callback, delay) {
   // callback을 의존성 배열에 담아서 렌더링해도 되는 것 아닌가?
   // setInterval, clearInterval할 때, 딜레이가 조금씩 발생
   // callback이 변함에 따라 set, clear가 동작하고 그에 따라 딜레이가 반영이 되어 1초보다 더 늦게 변화
-  // 대신, ref를 이용하여 최신 콜백을 담아둠
+  // 대신, ref를 이용하여 최신 콜백을 담아둔 다음에 최신 콜백을 실행하게 하는 방법
 
   return savedCallback.current;
 }
