@@ -1,6 +1,6 @@
 // ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ./CustomHookRSP.jsx
 // CommonJS의 module.exports나 exports.* 구문을 사용해야 함
-// import, export 구문 쓰면 에러가 발생
+// CommonJS(module.exports, require)와 ES Module(import, export)을 함께 사용하지 못함
 const React = require("react");
 const { useEffect, useRef } = React;
 
