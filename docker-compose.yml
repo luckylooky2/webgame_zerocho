@@ -1,0 +1,31 @@
+# docker 컨테이너 버전을 명시
+version: "3"
+
+# yaml: line 6: found character that cannot start any token
+# 들여쓰기 문제 : tab, space
+
+# services는 컨테이너
+services:
+  react:
+    container_name: react
+    restart: always
+    # -it 옵션을 위해 사용됨 (표준입출력)
+    # stdin_open: true
+    # tty: true
+    # 현재 경로에 이미지 빌드
+    build:
+      context: ./8_지뢰찾기
+      dockerfile: Dockerfile
+      # package.json 파일을 컨테이너로 복사
+      # 종속성을 설치하기 위해 필요
+      # args:
+      #   - package=./7_틱택토/package.json
+    # 포트 포워딩
+    ports:
+      - "3000:8080"
+    # 로컬 머신에 있는 파일들 맵핑
+    volumes:
+      - /usr/src/app/8_지뢰찾기/node_modules
+      - .:/usr/src/app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
