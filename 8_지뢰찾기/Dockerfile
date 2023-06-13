@@ -1,17 +1,19 @@
-# 1. docker build ./7_틱택토 -t react
-# 2. docker run -p 3000:8080 --name react react
+# 1. 이미지 생성 : docker build -t react .
+# 2. 컨테이너 생성 : docker run -p 3000:3000 -v $PWD:/app --name react react
+# 3. 컨테이너 종료 : docker stop react
+# 4. 컨테이너 다시 실행 : docker start react
+# 5. 컨테이너 삭제 : docker rm react
 
 # 가져올 이미지를 정의
 FROM node:14
 # 경로 설정하기
-WORKDIR /usr/src/app/8_지뢰찾기
+WORKDIR /app
 # package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
-# COPY package.json .
-COPY setup.sh .
+COPY package.json .
 # 명령어 실행 (의존성 설치)
-# RUN npm install
+RUN npm install
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
-# COPY . .
+COPY . .
 
 # 각각의 명령어들은 한줄 한줄씩 캐싱되어 실행된다.
 # package.json의 내용은 자주 바뀌진 않을 거지만
@@ -19,8 +21,8 @@ COPY setup.sh .
 # npm install과 COPY . . 를 동시에 수행하면
 # 소스 코드가 조금 달라질때도 항상 npm install을 수행해서 리소스가 낭비된다.
 
-# 8080번 포트 노출 => webpack이 열어놓은 포트
-EXPOSE 8080
+# 3000번 포트 노출 => webpack이 열어놓은 포트
+EXPOSE 3000
 
 # npm run dev 스크립트 실행
-CMD ["bash", "setup.sh"]
+CMD ["npm", "run", "dev"]
