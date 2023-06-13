@@ -47,7 +47,7 @@ module.exports = {
   devServer: {
     devMiddleware: { publicPath: "/dist" },
     static: { directory: path.resolve(__dirname) },
+    port: 3000,
     hot: true,
-    
   },
 };
