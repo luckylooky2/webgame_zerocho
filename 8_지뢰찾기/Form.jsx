@@ -26,6 +26,8 @@ const Form = memo(() => {
     dispatch({ type: START_GAME, row, col, mine });
   }, [row, col, mine]);
 
+  console.log("render : Form");
+
   return (
     <>
       <input

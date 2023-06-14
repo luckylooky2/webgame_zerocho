@@ -4,6 +4,8 @@ import { TableContext } from "./MineSearch";
 
 const Table = memo(() => {
   const { tableData } = useContext(TableContext);
+  // 리렌더링 확인용
+  console.log("render : Table");
 
   return (
     <table>

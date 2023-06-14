@@ -1,15 +1,18 @@
-import React, { useCallback, useContext, useEffect, memo } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  memo,
+  useMemo,
+} from "react";
 import { TableContext } from "./MineSearch";
 import {
   OPEN_CELL,
   CLICK_MINE,
   CODE,
   FLAG_CELL,
-  FLAG_MINE_CELL,
   QUESTION_CELL,
-  QUESTION_MINE_CELL,
   NORMAL_CELL,
-  MINE_CELL,
 } from "./constant";
 
 const getTdStyle = (code) => {
@@ -34,17 +37,24 @@ const getTdStyle = (code) => {
 };
 
 const Td = memo(({ columnIndex, rowIndex }) => {
+  // useContext를 사용하면 tableData가 바뀔 때마다 기본적으로 모든 Td 컴포넌트가 리렌더링됨
   const { tableData, dispatch, halted } = useContext(TableContext);
+
+  // 사실 컴포넌트가 리렌더링 되는 것은 막을 수 없는데
+  // return 하는 JSX가 리렌더링되는 것을 막을 수 는 있음 => useMemo() : 값, JSX 캐싱
+  console.log("render : Td"); // 100번 리렌더링
 
   const getTdText = useCallback(
     (code) => {
+      // open한 칸만 리렌더링
+      console.log("render : getTdText");
       switch (code) {
         case CODE.NORMAL:
         case CODE.OPENED:
           return "";
         case CODE.MINE:
-          // return halted ? "X" : "";
-          return "X"; // 디버깅 용도
+          return halted ? "X" : "";
+        // return "X"; // 디버깅 용도
         case CODE.CLICKED_MINE:
           return "펑";
         case CODE.FLAG_MINE:
@@ -109,14 +119,19 @@ const Td = memo(({ columnIndex, rowIndex }) => {
 
   // react가 편한 이유
   // 데이터에 따라서 style, text를 바꿔줄 수 있기 때문에 매우 편함
-  return (
-    <td
-      onClick={onClickCell}
-      onContextMenu={onRightClickCell}
-      style={getTdStyle(tableData[rowIndex][columnIndex])}
-    >
-      {getTdText(tableData[rowIndex][columnIndex])}
-    </td>
+
+  // useMemo를 통한 리렌더링 방지
+  return useMemo(
+    () => (
+      <td
+        onClick={onClickCell}
+        onContextMenu={onRightClickCell}
+        style={getTdStyle(tableData[rowIndex][columnIndex])}
+      >
+        {getTdText(tableData[rowIndex][columnIndex])}
+      </td>
+    ),
+    [tableData[rowIndex][columnIndex], halted]
   );
 });
 
