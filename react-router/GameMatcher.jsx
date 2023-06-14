@@ -3,6 +3,10 @@ import { withRouter } from "react-router-dom";
 
 // cf> hooks인 경우 : props에 포함되어 있음
 class GameMatcher extends React.Component {
+  onClick() {
+    this.props.history.goBack();
+  }
+
   render() {
     // <Route />가 렌더링할 컴포넌트에 넣어주는 props(history, location, match)라고 생각하면 됨!
     console.log(this.props);

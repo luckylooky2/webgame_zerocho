@@ -39,6 +39,7 @@ import {
 // 4. Dynamic Route Maching
 // - <Route />가 너무 늘어나면 관리하는 데 문제가 생길 수 있음. 효율적으로 관리하는 방법
 // - path="/game/:name"
+// - 여러 개도 가능 => path="/game/:name/:number"
 
 const Games = () => {
   return (
@@ -117,3 +118,27 @@ export default Games;
 // Switch를 해도 /game/exact로 접속하면 /로 라우팅되는 문제(잘 이해는 안 가지만...)
 // <Route exact path="/" component={GameMatcher} />
 // exact를 붙이면 정확하게 일치하지 않으면 넘어가는 처리를 할 수 있음
+
+// react-router v6
+// - 대대적인 변화
+// - why? Reach Router와 통합하면서 변화가 생김 : react-training => remix-run 회사 이름 변경
+// - remix? Next.js와 같은 react 프레임워크
+// - remix를 만들면서 v5를 도입하려고 했으나 잘 안 되어서? Reach와 합친 v6를 도입
+// - 공통점 : BrowserRouter
+// - 차이점 : 찾는 방법? 1) github change log / migration guide / release tag 2) 공식 문서
+// - Switch => Routes
+// - exact 제거
+// - component, render => element
+// - Route 중첩 가능 => *JSX로 처리할 수 있어 더 직관적*
+// - <Routes> <Route path="/game/:name" element={<GameMatcher />} /> </Routes> // Games.jsx
+// - <Routes> <Route path="number-baseball" element={<NumberBaseBall />} /> <Routes> // GameMatcher.jsx : 내부 Route는 상대 경로임에 주의
+// - 나머지 예외 처리 => path="*"
+// - <Route path="*" element={<div>일치하는 게임이 없습니다.</div>} />
+// - 404 페이지 용도
+// - props 변경
+// - history : history.push => useNavigate(), useNavigate(-1) 뒤로가기
+// - match : useParams()
+
+// 있던 props, attributes도 사라질 수 있기 때문에, 이러한 변화에 있어서 TS가 유리
+// 에러 표시를 띄워주기 때문에
+// JS는? Codemod라는 라이브러리로 가능, react-router v5에서 v6으로 올리는 스크립트?를 사람들이 만들 수 있어서 쉽게 바꿀 수 있는 장점
