@@ -34,3 +34,5 @@ CMD ["bash", "setup.sh"]
 # 1. npm install이 되지 않음
 # 2. CMD 2개를 차례로 실행할 수 없음
 # 3. exec를 붙이면 hot reload가 안 되고, 붙이지 않으면 gracefully shut down이 불가
+
+# https://rkaehdaos.github.io/uncategorized/react-hotloading-with-docker/
