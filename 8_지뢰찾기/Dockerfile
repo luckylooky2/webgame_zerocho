@@ -1,5 +1,5 @@
 # 1. 이미지 생성 : docker build -t react .
-# 2. 컨테이너 생성 : docker run -p 3000:3000 -v $PWD:/app --name react react
+# 2. 컨테이너 생성 : docker run -d -p 3000:3000 -v $PWD:/app --name react react
 # 3. 컨테이너 종료 : docker stop react
 # 4. 컨테이너 다시 실행 : docker start react
 # 5. 컨테이너 삭제 : docker rm react
@@ -9,9 +9,9 @@ FROM node:14
 # 경로 설정하기
 WORKDIR /app
 # package.json 워킹 디렉토리에 복사 (.은 설정한 워킹 디렉토리를 뜻함)
-COPY package.json .
+# COPY package.json .
 # 명령어 실행 (의존성 설치)
-RUN npm install
+# RUN npm install
 # 현재 디렉토리의 모든 파일을 도커 컨테이너의 워킹 디렉토리에 복사한다.
 COPY . .
 
@@ -25,4 +25,12 @@ COPY . .
 EXPOSE 3000
 
 # npm run dev 스크립트 실행
-CMD ["npm", "run", "dev"]
+# ENTRYPOINT ["npm", "install"]
+# CMD ["sleep", "100000"]
+# CMD ["npm", "run", "dev"]
+CMD ["bash", "setup.sh"]
+
+# 문제
+# 1. npm install이 되지 않음
+# 2. CMD 2개를 차례로 실행할 수 없음
+# 3. exec를 붙이면 hot reload가 안 되고, 붙이지 않으면 gracefully shut down이 불가
